@@ -12,22 +12,24 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from environ import Env
 
-load_dotenv()
+env = Env()
+Env.read_env()
 
-current_env = os.environ.get('ENVIRONMENT')
+current_env = env('ENVIRONMENT', default="production")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,7 +89,7 @@ else:
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [(os.environ.get('REDIS_URL'))],
+                "hosts": [(env('REDIS_URL'))],
             },
         },
     }
@@ -151,7 +153,7 @@ else :
     # 1. dj-database-url
     # 2. psycopg2-binary
     # DATABASES = {
-        # 'default': dj_database_url.config(default = os.environ.get('INTERNAL_DATABASE_URL'))
+        # 'default': dj_database_url.config(default = env('INTERNAL_DATABASE_URL'))
     # }
 
 
@@ -159,11 +161,11 @@ else :
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME'),
-            'USER': os.environ.get('USER'),
-            'PASSWORD': os.environ.get('PASSWORD'),
-            'HOST': os.environ.get('HOST'),
-            'PORT': os.environ.get('PORT'),
+            'NAME': env('DATABASE_NAME'),
+            'USER': env('USER'),
+            'PASSWORD': env('PASSWORD'),
+            'HOST': env('HOST'),
+            'PORT': env('PORT'),
         }
     }
 
